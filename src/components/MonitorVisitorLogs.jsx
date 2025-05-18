@@ -11,12 +11,12 @@ export default function MonitorVisitorLogs() {
     );
 
     return (
-        <div className="flex-grow min-h-screen bg-white overflow-hidden">
+        <div className="flex-grow min-h-screen bg-[#f6fdf4] overflow-hidden">
             {/* Main content without border */}
-            <div className="flex-grow w-full bg-white">
-                <div className="bg-white rounded-md">
+            <div className="flex-grow w-full bg-[#f6fdf4]">
+                <div className="bg-[#f6fdf4] rounded-md">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 h2 className="text-xl font-bold text-gray-800 pb-2">
+                        <h2 h2 className="text-lg font-bold text-gray-800 pb-2">
                             Total Visitors Today: {filteredVisitors.length}
                         </h2>
                         <div className="flex gap-2 items-center">

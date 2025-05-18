@@ -1,18 +1,23 @@
+// Layout.jsx
 import NavBar from "./NavBar";
-
 
 export default function Layout({ children }) {
   return (
-    <div className="flex h-screen bg-white text-black">
+    <div className="flex bg-[#f6fdf4] text-black h-screen overflow-hidden">
       {/* Sidebar */}
       <NavBar />
 
       {/* Main Content */}
-      <div className="pl-64 w-full flex flex-col overflow-hidden pt-16">
-        {/* Added `pt-16` to push content below the fixed navbar */}
-        <div className="flex-grow p-6 overflow-auto">{children}</div>
-
+      <div className="pl-64 w-full pt-16 pb-10 relative">
+        <main className="h-[calc(100vh-4rem-2.5rem)] p-5 overflow-hidden">
+          {children}
+        </main>
       </div>
+
+      {/* Fixed Footer */}
+      <footer className="fixed bottom-0 left-64 w-[calc(100%-16rem)] h-10 bg-[#a4d4a0] text-sm text-[#2e2e2e] font-medium flex items-center justify-center shadow-md z-10">
+        &copy; {new Date().getFullYear()} Visitor Pass Management System
+      </footer>
     </div>
   );
 }

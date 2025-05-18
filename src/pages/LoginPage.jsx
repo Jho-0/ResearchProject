@@ -1,3 +1,4 @@
+//LoginPage.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
@@ -22,7 +23,7 @@ export default function LoginPage() {
       if (role === "admin") {
         navigate("dashboard-admin");
       } else if (role === "receptionist") {
-        navigate("/reception-dashboard");
+        navigate("/receptionist-user");
       } else if (role === "visitor") {
         navigate("/visitor-dashboard");
       } else {

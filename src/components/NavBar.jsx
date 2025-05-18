@@ -1,6 +1,6 @@
 // NavBar.jsx
 import logo from "../assets/LMCDC.png";
-import { Link, useLocation } from "react-router"; // or "react-router-dom" if you're on v6
+import { Link, useLocation } from "react-router"; // or "react-router-dom"
 import { useAuth } from "../context/AuthContext";
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { FaClipboardList } from "react-icons/fa";
@@ -12,14 +12,43 @@ export default function NavBar() {
   const { logout } = useAuth();
   const location = useLocation();
 
-  // Map each route to the title you want displayed
-  const routeTitles = {
-    "/dashboard": "Dashboard",
-    "/user": "User Management",
-    "/monitor-logs": "Monitor Visitor Logs",
-    "/generate-report": "Generate Report",
+  // Get role from localStorage
+  const role = localStorage.getItem("role");
+
+  // Sidebar navigation options
+  const navItems = {
+    admin: [
+      {
+        path: "/dashboard-admin",
+        label: "Dashboard",
+        icon: <MdDashboard className="text-lg" />,
+      },
+      {
+        path: "/monitor-visitor-logs",
+        label: "Monitor Visitor Logs",
+        icon: <FaClipboardList className="text-lg" />,
+      },
+      {
+        path: "/generate-report",
+        label: "Generate Report",
+        icon: <HiDocumentReport className="text-lg" />,
+      },
+    ],
+    receptionist: [
+      {
+        path: "/receptionist-user",
+        label: "Manage Users",
+        icon: <HiDocumentReport className="text-lg" />,
+      },
+    ],
   };
 
+  const routeTitles = {
+    "/dashboard-admin": "Dashboard",
+    "/monitor-visitor-logs": "Monitor Visitor Logs",
+    "/generate-report": "Generate Report",
+    "/receptionist-user": "Manage Users",
+  };
 
   const title = routeTitles[location.pathname] || "Dashboard";
 
@@ -31,25 +60,15 @@ export default function NavBar() {
         <h1 className="text-2xl font-semibold mb-10">VPMS</h1>
 
         <nav className="w-full px-4 space-y-2 text-sm">
-          <Link
-            to="/dashboard-admin"
-            className="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-[#388e3c]"
-          >
-            <MdDashboard className="text-lg" /> Dashboard
-          </Link>
-          <Link
-            to="/monitor-visitor-logs"
-            className="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-[#388e3c]"
-          >
-
-            <FaClipboardList className="text-lg" /> Monitor Visitor Logs
-          </Link>
-          <Link
-            to="/generate-report"
-            className="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-[#388e3c]"
-          >
-            <HiDocumentReport className="text-lg" /> Generate Report
-          </Link>
+          {(navItems[role] || []).map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-[#388e3c]"
+            >
+              {item.icon} {item.label}
+            </Link>
+          ))}
           <button
             onClick={logout}
             className="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-[#388e3c] w-full text-left"
@@ -62,13 +81,11 @@ export default function NavBar() {
       {/* Top Navbar */}
       <div className="flex-1">
         <header className="fixed top-0 left-64 right-0 h-16 bg-[#a5d6a7] flex items-center justify-center z-40 shadow-sm">
-          <div className="w-full max-w-6xl flex items-center justify-between px-6">
-            <h2 className="text-xl font-semibold text-[#2e2e2e]">
-              {title}
-            </h2>
+          <div className="w-full max-w-7xl flex px-5.5 items-center justify-between">
+            <h2 className="text-xl font-bold text-[#2e2e2e]">{title}</h2>
             <div className="flex items-center gap-2 text-[#2e2e2e]">
               <FiUser className="text-xl" />
-              <span className="font-medium">Admin</span>
+              <span className="font-medium capitalize">{role || "User"}</span>
             </div>
           </div>
         </header>

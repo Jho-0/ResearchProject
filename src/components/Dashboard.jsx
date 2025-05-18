@@ -9,24 +9,24 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col bg-[#f6fdf4]">
       {/* Main Content */}
       <div className="flex-grow">
 
         {/* Stats Cards Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
           <div className="flex flex-col gap-2 p-6 bg-[#d8eed6] border border-green-800 rounded-lg shadow-sm">
-            <div className="flex items-center gap-3 text-lg font-semibold text-gray-800"><FaUsers className="text-green-800" />Total Visitors Today</div>
+            <div className="flex items-center gap-3 text-xl font-semibold text-gray-800"><FaUsers className="text-green-800" />Total Visitors Today</div>
             <p className="text-3xl font-bold text-green-900">{visitors.length}</p>
           </div>
 
           <div className="flex flex-col gap-2 p-6 bg-[#f1e9d3] border border-green-800 rounded-lg shadow-sm">
-            <div className="flex items-center gap-3 text-lg font-semibold text-gray-800"><FaMapMarkerAlt className="text-green-800" />Current Active Visitors</div>
+            <div className="flex items-center gap-3 text-xl font-semibold text-gray-800"><FaMapMarkerAlt className="text-green-800" />Current Active Visitors</div>
             <p className="text-3xl font-bold text-green-900">0</p>
           </div>
 
           <div className="flex flex-col gap-2 p-6 bg-[#c6e1b8] border border-green-800 rounded-lg shadow-sm">
-            <div className="flex items-center gap-3 text-lg font-semibold text-gray-800"><FaUserPlus className="text-green-800" />Pre-Registered Visitor</div>
+            <div className="flex items-center gap-3 text-xl font-semibold text-gray-800"><FaUserPlus className="text-green-800" />Pre-Registered Visitor</div>
             <p className="text-3xl font-bold text-green-900">0</p>
           </div>
         </div>

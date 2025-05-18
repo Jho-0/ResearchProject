@@ -20,7 +20,7 @@ export default function GenerateReport() {
     return (
         <div className="flex flex-col min-h-screen bg-white overflow-hidden items-center">
             <div className="flex-grow w-full bg-white">
-                <h2 className="text-xl font-bold text-gray-800 mb-6 pb-2">Generate Report</h2>
+                <h2 className="text-lg font-bold text-gray-800 mb-6 pb-2">Generate Report</h2>
 
                 <form onSubmit={handleGenerateReport}>
                     <div className="mb-6">
