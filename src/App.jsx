@@ -20,7 +20,7 @@ function App() {
         <Route path="/dashboard-admin" element={<PrivateRoute element={<DashboardPage />} />} />
         <Route path="/monitor-visitor-logs" element={<PrivateRoute element={<LogsPage />} />} />
         <Route path="/generate-report" element={<PrivateRoute element={<ReportPage />} />} />
-        <Route path="/receptionist-user" element={<PrivateRoute element={<ManageUser />} />} />
+        <Route path="/manageuser-admin" element={<PrivateRoute element={<ManageUser />} />} />
       </Routes>
     </Router>
   );

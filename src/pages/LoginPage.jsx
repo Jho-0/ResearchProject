@@ -27,7 +27,7 @@ export default function LoginPage() {
       } else if (role === "visitor") {
         navigate("/visitor-dashboard");
       } else {
-        alert("Mali") // fallback
+        alert("Unknown role. Please contact admin.");
       }
     }
   };
@@ -58,7 +58,7 @@ export default function LoginPage() {
             <label htmlFor="username" className="text-sm text-gray-700 font-medium mb-1">Username</label>
             <div className="relative">
               <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input type="text" id="username" name="username" onChange={handleChange}
+              <input type="text" id="username" name="username" value={credentials.username} onChange={handleChange}
                 className="pl-10 pr-3 py-2 w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400" />
             </div>
           </div>
@@ -67,7 +67,7 @@ export default function LoginPage() {
             <label htmlFor="password" className="text-sm text-gray-700 font-medium mb-1">Password</label>
             <div className="relative">
               <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input type="password" id="password" name="password" onChange={handleChange}
+              <input type="password" id="password" name="password" value={credentials.password} onChange={handleChange}
                 className="pl-10 pr-3 py-2 w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400" />
             </div>
           </div>

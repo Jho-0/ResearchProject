@@ -24,6 +24,11 @@ export default function NavBar() {
         icon: <MdDashboard className="text-lg" />,
       },
       {
+        path: "/manageuser-admin",
+        label: "Manage Users",
+        icon: <HiDocumentReport className="text-lg" />,
+      },
+      {
         path: "/monitor-visitor-logs",
         label: "Monitor Visitor Logs",
         icon: <FaClipboardList className="text-lg" />,
@@ -34,13 +39,13 @@ export default function NavBar() {
         icon: <HiDocumentReport className="text-lg" />,
       },
     ],
-    receptionist: [
-      {
-        path: "/receptionist-user",
-        label: "Manage Users",
-        icon: <HiDocumentReport className="text-lg" />,
-      },
-    ],
+    // receptionist: [
+    //   {
+    //     path: "/receptionist-user",
+    //     label: "Manage Visitors",
+    //     icon: <HiDocumentReport className="text-lg" />,
+    //   },
+    // ],
   };
 
   const routeTitles = {

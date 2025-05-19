@@ -12,7 +12,9 @@ export default function AuthProvider({ children }) {
       const response = await axios.post("http://localhost:8000/api/login/", credentials);
       const { access, refresh, username, role } = response.data;
 
-      localStorage.setItem("accessToken", access);
+      // ✅ Set access token in localStorage
+      localStorage.setItem("access_token", access);
+      localStorage.setItem("accessToken", access); // (optional: if you're using both)
       localStorage.setItem("refreshToken", refresh);
       localStorage.setItem("username", username);
       localStorage.setItem("role", role);
@@ -20,7 +22,8 @@ export default function AuthProvider({ children }) {
       setUser({ username, role });
       setError(null);
       return true;
-    } catch {
+    } catch (err) {
+      console.error(err);
       setError("Invalid username or password");
       return false;
     }

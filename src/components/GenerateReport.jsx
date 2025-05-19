@@ -18,8 +18,8 @@ export default function GenerateReport() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-white overflow-hidden items-center">
-            <div className="flex-grow w-full bg-white">
+        <div className="flex flex-col min-h-screen bg-[#f6fdf4] overflow-hidden items-center">
+            <div className="flex-grow w-full bg-[#f6fdf4]">
                 <h2 className="text-lg font-bold text-gray-800 mb-6 pb-2">Generate Report</h2>
 
                 <form onSubmit={handleGenerateReport}>
