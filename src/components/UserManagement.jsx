@@ -1,30 +1,30 @@
-//UserManagement.jsx
+// UserManagement.jsx
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { FaFilter } from "react-icons/fa";
 import { MdPersonAddAlt } from "react-icons/md";
-import AddUserModal from "../components/AddUserModal"; // adjust the path
+import AddUserModal from "../components/AddUserModal"; // adjust path if needed
 
 export default function UserManagement() {
     const [users, setUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [showModal, setShowModal] = useState(false);
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const token = localStorage.getItem("access_token"); // assuming you stored it after login
-                const res = await axios.get("http://localhost:8000/api/get-user/", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setUsers(res.data);
-            } catch (err) {
-                console.error("Error fetching users:", err);
-            }
-        };
+    const fetchUsers = async () => {
+        try {
+            const token = localStorage.getItem("access_token");
+            const res = await axios.get("http://localhost:8000/api/get-user/", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setUsers(res.data);
+        } catch (err) {
+            console.error("Error fetching users:", err);
+        }
+    };
 
+    useEffect(() => {
         fetchUsers();
     }, []);
 
@@ -34,7 +34,11 @@ export default function UserManagement() {
 
     return (
         <div className="flex flex-col min-h-screen overflow-hidden">
-            <AddUserModal isOpen={showModal} onClose={() => setShowModal(false)} />
+            <AddUserModal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                refreshUsers={fetchUsers}
+            />
 
             <div className="flex-grow">
                 {/* Top Control Panel */}
@@ -50,13 +54,13 @@ export default function UserManagement() {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <button className="flex items-center gap-1 bg-[#bde5b4] text-green-800 border border-green-600 px-3 py-2 rounded-md text-sm hover:bg-[#a4dba4]">
-                            <FaFilter />Filter
+                            <FaFilter /> Filter
                         </button>
                         <button
                             onClick={() => setShowModal(true)}
                             className="flex items-center gap-1 bg-green-800 text-white px-3 py-2 rounded-md text-sm hover:bg-green-900"
                         >
-                            <MdPersonAddAlt />Add User
+                            <MdPersonAddAlt /> Add User
                         </button>
                     </div>
                 </div>
@@ -68,6 +72,7 @@ export default function UserManagement() {
                             <tr>
                                 <th className="px-6 py-3">Username</th>
                                 <th className="px-6 py-3">Role</th>
+                                <th className="px-6 py-3">Status</th>
                                 <th className="px-6 py-3">Date Added</th>
                                 <th className="px-6 py-3 text-right"></th>
                             </tr>
@@ -75,7 +80,7 @@ export default function UserManagement() {
                         <tbody>
                             {filteredUsers.length === 0 ? (
                                 <tr>
-                                    <td colSpan="4" className="text-center py-6 text-gray-500">
+                                    <td colSpan="5" className="text-center py-6 text-gray-500">
                                         No users found.
                                     </td>
                                 </tr>
@@ -83,17 +88,25 @@ export default function UserManagement() {
                                 filteredUsers.map((user) => (
                                     <tr key={user.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4">{user.username}</td>
-                                        <td className="px-6 py-4 capitalize"><span className={`px-2 py-1 rounded-full text-white text-xs font-semibold  ${user.role === "admin" ? "bg-blue-600" : "bg-green-600"}`}
-                                        >
-                                            {user.role}
-                                        </span></td>
-                                        <td className="px-6 py-4 capitalize"><span
-                                            className={`px-2 py-1 rounded-full text-white text-xs font-semibold 
-            ${user.is_active ? "bg-green-500" : "bg-red-500"}`}
-                                        >
-                                            {user.is_active ? "Active" : "Inactive"}
-                                        </span></td>
-                                        <td className="px-6 py-4">{user.date_joined ? new Date(user.date_joined).toLocaleDateString() : "—"}</td>
+                                        <td className="px-6 py-4 capitalize">
+                                            <span
+                                                className={`px-2 py-1 rounded-full text-white text-xs font-semibold ${user.role === "admin" ? "bg-blue-600" : "bg-green-600"
+                                                    }`}
+                                            >
+                                                {user.role}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 capitalize">
+                                            <span
+                                                className={`px-2 py-1 rounded-full text-white text-xs font-semibold ${user.is_active ? "bg-green-500" : "bg-red-500"
+                                                    }`}
+                                            >
+                                                {user.is_active ? "Active" : "Inactive"}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {user.date_joined ? new Date(user.date_joined).toLocaleDateString() : "—"}
+                                        </td>
                                         <td className="px-6 py-4 text-right">
                                             <button className="text-gray-500 hover:text-gray-800 text-xl">
                                                 &#x22EE;
