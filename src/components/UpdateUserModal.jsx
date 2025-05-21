@@ -1,19 +1,31 @@
-// AddUserModal.jsx
-import { useState } from "react";
+//UpdateUserModal.jsx
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-export default function AddUserModal({ isOpen, onClose, refreshUsers }) {
+export default function UpdateUserModal({ isOpen, onClose, userData, refreshUsers }) {
     const [formData, setFormData] = useState({
         username: "",
         firstName: "",
         lastName: "",
         email: "",
-        password: "",
         role: "",
         status: "",
     });
 
     const [showConfirm, setShowConfirm] = useState(false);
+
+    useEffect(() => {
+        if (userData) {
+            setFormData({
+                username: userData.username || "",
+                firstName: userData.first_name || "",
+                lastName: userData.last_name || "",
+                email: userData.email || "",
+                role: userData.role || "",
+                status: userData.is_active ? "Active" : "Inactive",
+            });
+        }
+    }, [userData]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,7 +37,6 @@ export default function AddUserModal({ isOpen, onClose, refreshUsers }) {
             firstName: "",
             lastName: "",
             email: "",
-            password: "",
             role: "",
             status: "",
         });
@@ -38,7 +49,7 @@ export default function AddUserModal({ isOpen, onClose, refreshUsers }) {
             <div className="fixed inset-0 z-40 backdrop-blur-sm bg-white/10" />
             <div className="fixed inset-0 z-50 flex items-center justify-center">
                 <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-                    <h2 className="text-xl font-semibold text-green-800 mb-4">Add New User</h2>
+                    <h2 className="text-xl font-semibold text-blue-800 mb-4">Update User</h2>
                     <div className="space-y-4">
                         <input
                             type="text"
@@ -72,14 +83,6 @@ export default function AddUserModal({ isOpen, onClose, refreshUsers }) {
                             placeholder="Email"
                             className="w-full border rounded px-3 py-2 text-sm"
                         />
-                        <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            placeholder="Password"
-                            className="w-full border rounded px-3 py-2 text-sm"
-                        />
                         <div className="flex gap-2">
                             <select
                                 name="role"
@@ -108,16 +111,10 @@ export default function AddUserModal({ isOpen, onClose, refreshUsers }) {
                         <button
                             onClick={() => {
                                 const emptyFields = Object.entries(formData).filter(
-                                    // eslint-disable-next-line no-unused-vars
-                                    ([key, value]) => value.trim() === ""
+                                    ([, value]) => value.trim() === ""
                                 );
                                 if (emptyFields.length > 0) {
                                     toast.error("Please fill in all fields");
-                                    return;
-                                }
-
-                                if (formData.role === "Select Role" || formData.status === "Select Status") {
-                                    toast.error("Please select a valid role and status");
                                     return;
                                 }
 
@@ -126,11 +123,12 @@ export default function AddUserModal({ isOpen, onClose, refreshUsers }) {
                                     toast.error("Please enter a valid email address");
                                     return;
                                 }
+
                                 setShowConfirm(true);
                             }}
-                            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                         >
-                            Add
+                            Update
                         </button>
                         <button
                             onClick={() => {
@@ -140,16 +138,6 @@ export default function AddUserModal({ isOpen, onClose, refreshUsers }) {
                             className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
                         >
                             Cancel
-
-                        </button>
-                        <button
-                            onClick={() => {
-                                handleClear();
-                            }}
-                            className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-                        >
-                            Clear
-
                         </button>
                     </div>
                 </div>
@@ -158,8 +146,8 @@ export default function AddUserModal({ isOpen, onClose, refreshUsers }) {
             {showConfirm && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-white/10">
                     <div className="bg-white p-6 rounded-md w-[400px] shadow-lg">
-                        <h2 className="text-lg font-semibold mb-4 text-red-600">Confirm User Addition</h2>
-                        <p>Are you sure you want to add this user?</p>
+                        <h2 className="text-lg font-semibold mb-4 text-blue-600">Confirm Update</h2>
+                        <p>Are you sure you want to update this user?</p>
                         <div className="flex justify-end gap-3 mt-4">
                             <button
                                 onClick={() => setShowConfirm(false)}
@@ -171,8 +159,8 @@ export default function AddUserModal({ isOpen, onClose, refreshUsers }) {
                                 onClick={async () => {
                                     try {
                                         const token = localStorage.getItem("access_token");
-                                        const res = await fetch("http://localhost:8000/api/create-user/", {
-                                            method: "POST",
+                                        const res = await fetch(`http://localhost:8000/api/update-user/${userData.id}/`, {
+                                            method: "PUT",
                                             headers: {
                                                 "Content-Type": "application/json",
                                                 Authorization: `Bearer ${token}`,
@@ -182,29 +170,35 @@ export default function AddUserModal({ isOpen, onClose, refreshUsers }) {
                                                 first_name: formData.firstName,
                                                 last_name: formData.lastName,
                                                 email: formData.email,
-                                                password: formData.password,
                                                 role: formData.role.toLowerCase(),
                                                 is_active: formData.status === "Active",
                                             }),
                                         });
 
                                         if (!res.ok) {
-                                            const err = await res.json();
-                                            throw new Error(JSON.stringify(err));
+                                            const contentType = res.headers.get("content-type");
+                                            let errorMsg = "Failed to update user";
+                                            if (contentType && contentType.includes("application/json")) {
+                                                const err = await res.json();
+                                                errorMsg = JSON.stringify(err);
+                                            } else {
+                                                const errText = await res.text();
+                                                errorMsg = errText;
+                                            }
+                                            throw new Error(errorMsg);
                                         }
 
-                                        await res.json();
-                                        toast.success("User added successfully");
+                                        toast.success("User updated successfully");
                                         await refreshUsers();
                                         handleClear();
-                                        onClose();
                                         setShowConfirm(false);
+                                        onClose();
                                     } catch (error) {
                                         console.error(error);
-                                        toast.error("Failed to add user");
+                                        toast.error("Failed to update user");
                                     }
                                 }}
-                                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+                                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
                             >
                                 Confirm
                             </button>

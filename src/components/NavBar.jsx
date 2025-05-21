@@ -1,6 +1,6 @@
 // NavBar.jsx
 import logo from "../assets/LMCDC.png";
-import { Link, useLocation } from "react-router"; // or "react-router-dom"
+import { Link, useLocation } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { FaClipboardList } from "react-icons/fa";
@@ -12,10 +12,8 @@ export default function NavBar() {
   const { logout } = useAuth();
   const location = useLocation();
 
-  // Get role from localStorage
   const role = localStorage.getItem("role");
 
-  // Sidebar navigation options
   const navItems = {
     admin: [
       {
@@ -53,6 +51,7 @@ export default function NavBar() {
     "/monitor-visitor-logs": "Monitor Visitor Logs",
     "/generate-report": "Generate Report",
     "/receptionist-user": "Manage Users",
+    "/manageuser-admin": "Manage Users",
   };
 
   const title = routeTitles[location.pathname] || "Dashboard";
