@@ -1,7 +1,7 @@
 // NavBar.jsx
 import logo from "../assets/LMCDC.png";
 import { Link, useLocation } from "react-router";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/Authcontext";
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { FaClipboardList } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";

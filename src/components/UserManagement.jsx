@@ -3,6 +3,8 @@ import axios from "axios";
 import { MdPersonAddAlt } from "react-icons/md";
 import AddUserModal from "../components/AddUserModal";
 import UpdateUserModal from "../components/UpdateUserModal";
+import { FaUserEdit } from "react-icons/fa";
+
 
 export default function UserManagement() {
     const [users, setUsers] = useState([]);
@@ -112,15 +114,15 @@ export default function UserManagement() {
                     </div>
                 </div>
 
-                <div className="bg-white shadow-md rounded-b-md overflow-hidden">
-                    <table className="w-full text-sm text-left text-gray-700">
+                <div className="bg-white shadow-md rounded-b-md overflow-x-auto">
+                    <table className="w-full min-w-[700px] text-sm text-left text-gray-700 table-fixed">
                         <thead className="bg-[#e3f1db] text-green-900">
                             <tr>
-                                <th className="px-6 py-3">Username</th>
-                                <th className="px-6 py-3">Role</th>
-                                <th className="px-6 py-3">Status</th>
-                                <th className="px-6 py-3">Date Added</th>
-                                <th className="px-6 py-3 text-right">Actions</th>
+                                <th className="px-4 py-3 w-1/4">Username</th>
+                                <th className="px-4 py-3 w-1/4">Role</th>
+                                <th className="px-4 py-3 w-1/4">Status</th>
+                                <th className="px-4 py-3 w-1/5">Date Added</th>
+                                <th className="px-4 py-3 w-1/10 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -133,36 +135,36 @@ export default function UserManagement() {
                             ) : (
                                 currentUsers.map((user) => (
                                     <tr key={user.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4">{user.username}</td>
-                                        <td className="px-6 py-4 capitalize">
+                                        <td className="px-4 py-3 truncate max-w-[180px]">{user.username}</td>
+                                        <td className="px-4 py-3 capitalize">
                                             <span
-                                                className={`px-2 py-1 rounded-full text-white text-xs font-semibold ${user.role === "admin" ? "bg-blue-600" : "bg-yellow-500"
-                                                    }`}
+                                                className={`px-2 py-1 rounded-full text-white text-xs font-semibold ${user.role === "admin" ? "bg-blue-600" : "bg-yellow-500"}`}
                                             >
                                                 {user.role}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 capitalize">
+                                        <td className="px-4 py-3 capitalize">
                                             <span
-                                                className={`px-2 py-1 rounded-full text-white text-xs font-semibold ${user.is_active ? "bg-green-500" : "bg-red-500"
-                                                    }`}
+                                                className={`px-2 py-1 rounded-full text-white text-xs font-semibold ${user.is_active ? "bg-green-500" : "bg-red-500"}`}
                                             >
                                                 {user.is_active ? "Active" : "Inactive"}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 py-3">
                                             {user.date_joined
                                                 ? new Date(user.date_joined).toLocaleDateString()
                                                 : "—"}
                                         </td>
-                                        <td className="px-6 py-4 text-right">
-                                            {/* Placeholder for actions like edit/delete */}
-                                            <button onClick={() => {
-                                                setSelectedUser(user);
-                                                setIsUpdateOpen(true);
-                                            }} className="text-gray-500 hover:text-gray-800 text-xl">
-                                                &#x22EE;
-                                            </button>
+                                        <td className="px-4 py-3 text-right">
+                                            <FaUserEdit
+                                                onClick={() => {
+                                                    setSelectedUser(user);
+                                                    setIsUpdateOpen(true);
+                                                }}
+                                                className="text-3xl text-gray-800 hover:text-blue-700 transition-colors duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-full p-1 float-right"
+                                                title="Edit user"
+                                            >
+                                            </FaUserEdit>
                                         </td>
                                     </tr>
                                 ))

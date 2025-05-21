@@ -1,7 +1,7 @@
 //LoginPage.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/Authcontext";
 import bgPhoto from "../assets/HospitalPhoto_bg.jpg";
 import logo from "../assets/LMCDC.png";
 import { FaUser, FaLock } from "react-icons/fa";

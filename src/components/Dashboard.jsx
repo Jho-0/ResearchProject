@@ -1,8 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaUserPlus, FaMapMarkerAlt, FaUsers } from "react-icons/fa";
 
 export default function Dashboard() {
   const [visitors, setVisitors] = useState([]);
+  const [activeVisitors, setActiveVisitors] = useState(0);
+
+  useEffect(() => {
+    // Fetch active visitors from backend
+    const fetchActiveVisitors = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        const res = await fetch("http://localhost:8000/api/active-visitors/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setActiveVisitors(data.length);
+        } else {
+          setActiveVisitors(0);
+        }
+      } catch {
+        setActiveVisitors(0);
+      }
+    };
+    fetchActiveVisitors();
+  }, []);
 
   const ADD_VISITOR = (name, time, purpose) => {
     setVisitors((prev) => [...prev, { name, time, purpose }]);
@@ -12,7 +36,6 @@ export default function Dashboard() {
     <div className="flex flex-col bg-[#f6fdf4]">
       {/* Main Content */}
       <div className="flex-grow">
-
         {/* Stats Cards Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
           <div className="flex flex-col gap-2 p-6 bg-[#d8eed6] border border-green-800 rounded-lg shadow-sm">
@@ -22,7 +45,7 @@ export default function Dashboard() {
 
           <div className="flex flex-col gap-2 p-6 bg-[#f1e9d3] border border-green-800 rounded-lg shadow-sm">
             <div className="flex items-center gap-3 text-xl font-semibold text-gray-800"><FaMapMarkerAlt className="text-green-800" />Current Active Visitors</div>
-            <p className="text-3xl font-bold text-green-900">0</p>
+            <p className="text-3xl font-bold text-green-900">{activeVisitors}</p>
           </div>
 
           <div className="flex flex-col gap-2 p-6 bg-[#c6e1b8] border border-green-800 rounded-lg shadow-sm">

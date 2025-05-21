@@ -124,6 +124,20 @@ export default function UpdateUserModal({ isOpen, onClose, userData, refreshUser
                                     return;
                                 }
 
+                                // Check if there are any changes
+                                const hasChanges =
+                                    formData.username !== (userData.username || "") ||
+                                    formData.firstName !== (userData.first_name || "") ||
+                                    formData.lastName !== (userData.last_name || "") ||
+                                    formData.email !== (userData.email || "") ||
+                                    formData.role !== (userData.role || "") ||
+                                    formData.status !== (userData.is_active ? "Active" : "Inactive");
+
+                                if (!hasChanges) {
+                                    toast.info("No changes detected.");
+                                    return;
+                                }
+
                                 setShowConfirm(true);
                             }}
                             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
