@@ -15,18 +15,29 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def validate_username(self, value):
-        if CustomUser.objects.filter(username=value).exists():
+        user_id = self.instance.id if self.instance else None
+        if CustomUser.objects.filter(username=value).exclude(id=user_id).exists():
             raise serializers.ValidationError("Username already exists.")
         return value
 
     def validate_email(self, value):
-        if CustomUser.objects.filter(email=value).exists():
+        user_id = self.instance.id if self.instance else None
+        if CustomUser.objects.filter(email=value).exclude(id=user_id).exists():
             raise serializers.ValidationError("Email already exists.")
         return value
 
     def create(self, validated_data):
         user = CustomUser.objects.create_user(**validated_data)
         return user
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        if password:
+            instance.set_password(password)
+        instance.save()
+        return instance
     
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
